@@ -1,0 +1,4 @@
+{"timestamp": "2025-09-21T12:21:04.667159", "type": "SQLi", "url": "https://www.google.com?id=' OR '1'='1", "payload": "' OR '1'='1", "severity": "High"}
+{"timestamp": "2025-09-21T12:21:04.669577", "type": "SQLi", "url": "https://www.google.com?id=';--", "payload": "';--", "severity": "High"}
+{"timestamp": "2025-09-21T12:23:51.446885", "type": "SQLi", "url": "https://www.hackthebox.com?id=' OR '1'='1", "payload": "' OR '1'='1", "severity": "High"}
+{"timestamp": "2025-09-21T12:23:51.450312", "type": "SQLi", "url": "https://www.hackthebox.com?id=';--", "payload": "';--", "severity": "High"}

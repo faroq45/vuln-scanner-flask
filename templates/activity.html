@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>User Activity - vulscanner</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href={{ url_for('static', filename="vendor/bootstrap4/css/bootstrap.min.css") }}  rel="stylesheet">
+    <link href={{ url_for('static', filename="vendor/toastr/toastr.min.css") }}  rel="stylesheet">
+    <link href={{ url_for('static', filename="css/vulscanner.css") }}  rel="stylesheet">
+    <link href={{ url_for('static', filename="css/master.css") }}  rel="stylesheet">
+    <style>
+        .activity-table {
+            font-size: 0.9em;
+        }
+        .activity-table th {
+            background-color: #f8f9fa;
+        }
+        .badge-action {
+            font-size: 0.75em;
+        }
+        .activity-detail {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .stats-card {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div id="sidebar">{% include 'sidebar.html' %}</div>
+        <div id="body">
+            <nav class="navbar navbar-expand-lg navbar-primary bg-primary">
+                <button type="button" id="sidebarCollapse" class="btn btn-outline-light default-light-menu">
+                    <i class="fas fa-bars"></i><span></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item dropdown">
+                            <div class="nav-dropdown">
+                                <a href="" class="nav-item nav-link dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fas fa-user-shield"></i> <i style="font-size: .8em;" class="fas fa-caret-down"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right nav-link-menu">   
+                                    <ul class="nav-list">
+                                        <li><a href="/settings" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a></li>
+                                        <div class="dropdown-divider"></div>
+                                        <li><a href="/logout" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <div class="nav-dropdown">
+                                {% if vuln_count %}
+                                <span class="nav-item nav-link"> <i class="fas fa-bell"></i><span class="badge badge-danger">{{vuln_count}}</span>
+                                {% else %}
+                                <span class="nav-item nav-link"> <i class="fa fa-bell"></i><span class="badge badge-success">{{vuln_count}}</span> 
+                                {% endif %}
+                            </div>
+                        </li>  
+                    </ul>
+                </div>
+            </nav>
+        
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="page-title">
+                        <h3><i class="fas fa-history"></i> User Activity Logs</h3>
+                        <p class="text-muted">Track user actions and system events</p>
+                    </div>
+                    
+                    <!-- Statistics Cards -->
+                    <div class="row stats-card">
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="content text-center">
+                                    <h2 id="stat-total-activities" class="text-primary">-</h2>
+                                    <p>Total Activities</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% if is_admin %}
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="content text-center">
+                                    <h2 id="stat-unique-users" class="text-info">-</h2>
+                                    <p>Unique Users</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="content text-center">
+                                    <h2 id="stat-recent-logins" class="text-success">-</h2>
+                                    <p>Logins (24h)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="content">
+                                    <h5>Filters</h5>
+                                    <div class="row">
+                                        {% if is_admin %}
+                                        <div class="col-md-3">
+                                            <input type="text" id="filter-username" class="form-control" placeholder="Filter by username">
+                                        </div>
+                                        {% endif %}
+                                        <div class="col-md-3">
+                                            <input type="text" id="filter-action" class="form-control" placeholder="Filter by action">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button id="btn-apply-filter" class="btn btn-primary">Apply Filter</button>
+                                            <button id="btn-clear-filter" class="btn btn-secondary">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Activity Table -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="content">
+                                    <h5>Recent Activities</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped activity-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Timestamp</th>
+                                                    {% if is_admin %}<th>Username</th>{% endif %}
+                                                    <th>Action</th>
+                                                    <th>IP Address</th>
+                                                    <th>Details</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="activity-table-body">
+                                                <tr>
+                                                    <td colspan="{% if is_admin %}5{% else %}4{% endif %}" class="text-center">
+                                                        <i class="fas fa-spinner fa-spin"></i> Loading activities...
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="text-center">
+                                        <button id="btn-load-more" class="btn btn-primary">Load More</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src={{ url_for('static', filename="vendor/jquery/jquery.min.js") }}></script>
+    <script src={{ url_for('static', filename="vendor/bootstrap4/js/bootstrap.bundle.min.js") }}></script>
+    <script src={{ url_for('static', filename="vendor/toastr/toastr.min.js") }}></script>
+    <script src={{ url_for('static', filename="js/vulscanner.js") }}></script>
+    
+    <script>
+        let currentOffset = 0;
+        const limit = 50;
+        const isAdmin = {{ is_admin|tojson }};
+
+        // Load statistics
+        function loadStats() {
+            $.get('/api/activity/stats', function(data) {
+                $('#stat-total-activities').text(data.total_activities || 0);
+                if (isAdmin) {
+                    $('#stat-unique-users').text(data.unique_users || 0);
+                }
+                $('#stat-recent-logins').text(data.recent_logins_24h || 0);
+            }).fail(function() {
+                toastr.error('Failed to load statistics');
+            });
+        }
+
+        // Format timestamp
+        function formatTimestamp(isoString) {
+            const date = new Date(isoString);
+            return date.toLocaleString();
+        }
+
+        // Get action badge class
+        function getActionBadge(action) {
+            if (action.includes('LOGIN_SUCCESS') || action.includes('LOGIN')) {
+                return 'badge-success';
+            } else if (action.includes('FAILED') || action.includes('BLOCKED')) {
+                return 'badge-danger';
+            } else if (action.includes('SCAN')) {
+                return 'badge-info';
+            } else if (action.includes('LOGOUT')) {
+                return 'badge-warning';
+            }
+            return 'badge-secondary';
+        }
+
+        // Load activities
+        function loadActivities(reset = false) {
+            if (reset) {
+                currentOffset = 0;
+                $('#activity-table-body').empty();
+            }
+
+            const username = $('#filter-username').val();
+            const action = $('#filter-action').val();
+            
+            let url = `/api/activity?limit=${limit}&offset=${currentOffset}`;
+            if (username) url += `&username=${encodeURIComponent(username)}`;
+            if (action) url += `&action=${encodeURIComponent(action)}`;
+
+            $.get(url, function(data) {
+                if (data.activities.length === 0 && currentOffset === 0) {
+                    $('#activity-table-body').html(`
+                        <tr><td colspan="${isAdmin ? 5 : 4}" class="text-center">No activities found</td></tr>
+                    `);
+                    return;
+                }
+
+                data.activities.forEach(function(activity) {
+                    const detailsStr = activity.details ? JSON.stringify(activity.details).substring(0, 100) : '-';
+                    const row = `
+                        <tr>
+                            <td>${formatTimestamp(activity.timestamp)}</td>
+                            ${isAdmin ? `<td><strong>${activity.username}</strong></td>` : ''}
+                            <td><span class="badge badge-action ${getActionBadge(activity.action)}">${activity.action}</span></td>
+                            <td><code>${activity.ip_address || '-'}</code></td>
+                            <td class="activity-detail" title="${detailsStr}">${detailsStr}</td>
+                        </tr>
+                    `;
+                    $('#activity-table-body').append(row);
+                });
+
+                currentOffset += data.activities.length;
+
+                // Hide load more button if no more data
+                if (data.activities.length < limit) {
+                    $('#btn-load-more').hide();
+                } else {
+                    $('#btn-load-more').show();
+                }
+            }).fail(function() {
+                toastr.error('Failed to load activities');
+            });
+        }
+
+        // Event handlers
+        $(document).ready(function() {
+            loadStats();
+            loadActivities(true);
+
+            $('#btn-apply-filter').click(function() {
+                loadActivities(true);
+            });
+
+            $('#btn-clear-filter').click(function() {
+                $('#filter-username').val('');
+                $('#filter-action').val('');
+                loadActivities(true);
+            });
+
+            $('#btn-load-more').click(function() {
+                loadActivities(false);
+            });
+
+            // Enter key to filter
+            $('#filter-username, #filter-action').keypress(function(e) {
+                if (e.which === 13) {
+                    loadActivities(true);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

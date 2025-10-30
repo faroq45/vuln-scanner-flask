@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OWASP Top 10 Security Scanner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        .owasp-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+        }
+        
+        .vulnerability-card {
+            border-left: 4px solid #dc3545;
+            margin-bottom: 1rem;
+        }
+        
+        .severity-critical { border-left-color: #dc3545 !important; }
+        .severity-high { border-left-color: #fd7e14 !important; }
+        .severity-medium { border-left-color: #ffc107 !important; }
+        .severity-low { border-left-color: #28a745 !important; }
+        
+        .scan-progress {
+            display: none;
+        }
+        
+        .scan-form {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .check-group {
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .check-group h6 {
+            margin-bottom: 0.5rem;
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">🛡️ VulnScanner</a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="/">Dashboard</a>
+                <a class="nav-link active" href="/owasp-scan">OWASP Top 10</a>
+                <a class="nav-link" href="/reports">Reports</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="owasp-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1>🔍 OWASP Top 10 Security Scanner</h1>
+                    <p class="lead">Comprehensive vulnerability assessment based on OWASP Top 10 2021</p>
+                </div>
+                <div class="col-lg-4">
+                    <div class="text-right">
+                        <span class="badge badge-light">OWASP 2021</span>
+                        {% if scanner_available %}
+                            <span class="badge badge-success">Scanner Active</span>
+                        {% else %}
+                            <span class="badge badge-warning">Scanner Unavailable</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        {% if not scanner_available %}
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">⚠️ OWASP Scanner Not Available</h4>
+            <p>The OWASP Top 10 scanner engine is not currently available. This may be due to:</p>
+            <ul>
+                <li>Missing Python dependencies (aiohttp, asyncio)</li>
+                <li>Scanner module not installed properly</li>
+                <li>Configuration issues</li>
+            </ul>
+            <hr>
+            <p class="mb-0">Please contact your administrator or check the installation guide.</p>
+        </div>
+        {% endif %}
+
+        <!-- Scan Form -->
+        <div class="scan-form">
+            <h2>Start New OWASP Top 10 Scan</h2>
+            <p class="text-muted">Perform a comprehensive security assessment of your web application</p>
+            
+            <form id="owaspScanForm">
+                <!-- Target URL -->
+                <div class="form-group">
+                    <label for="target"><strong>Target URL</strong></label>
+                    <input type="url" class="form-control" id="target" name="target" 
+                           placeholder="https://example.com" required
+                           {% if not scanner_available %}disabled{% endif %}>
+                    <small class="form-text text-muted">Enter the base URL of the web application to scan</small>
+                </div>
+
+                <!-- Security Checks -->
+                <div class="form-group">
+                    <label><strong>Security Checks (OWASP Top 10)</strong></label>
+                    
+                    <div class="check-group">
+                        <h6>A03:2021 - Injection</h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="reflected_xss" name="checks" value="reflected_xss" checked>
+                            <label class="form-check-label" for="reflected_xss">
+                                Cross-Site Scripting (XSS)
+                                <small class="text-muted">- Reflected XSS vulnerabilities</small>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="sql_injection" name="checks" value="sql_injection" checked>
+                            <label class="form-check-label" for="sql_injection">
+                                SQL Injection
+                                <small class="text-muted">- Database injection attacks</small>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="directory_traversal" name="checks" value="directory_traversal" checked>
+                            <label class="form-check-label" for="directory_traversal">
+                                Directory Traversal
+                                <small class="text-muted">- Path injection vulnerabilities</small>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="check-group">
+                        <h6>A01:2021 - Broken Access Control</h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="open_redirect" name="checks" value="open_redirect" checked>
+                            <label class="form-check-label" for="open_redirect">
+                                Open Redirect
+                                <small class="text-muted">- Unvalidated redirects</small>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="broken_access_control" name="checks" value="broken_access_control" checked>
+                            <label class="form-check-label" for="broken_access_control">
+                                Broken Access Control
+                                <small class="text-muted">- Authorization bypass</small>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="check-group">
+                        <h6>A05:2021 - Security Misconfiguration</h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="security_headers" name="checks" value="security_headers" checked>
+                            <label class="form-check-label" for="security_headers">
+                                Security Headers
+                                <small class="text-muted">- Missing or weak security headers</small>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="security_misconfiguration" name="checks" value="security_misconfiguration">
+                            <label class="form-check-label" for="security_misconfiguration">
+                                Security Misconfiguration
+                                <small class="text-muted">- System misconfigurations</small>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="check-group">
+                        <h6>Other OWASP Categories</h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="ssrf" name="checks" value="ssrf">
+                            <label class="form-check-label" for="ssrf">
+                                Server-Side Request Forgery (A10:2021)
+                                <small class="text-muted">- SSRF vulnerabilities</small>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="authentication_bypass" name="checks" value="authentication_bypass">
+                            <label class="form-check-label" for="authentication_bypass">
+                                Authentication Issues (A07:2021)
+                                <small class="text-muted">- Authentication failures</small>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="information_disclosure" name="checks" value="information_disclosure">
+                            <label class="form-check-label" for="information_disclosure">
+                                Information Disclosure (A02:2021)
+                                <small class="text-muted">- Sensitive data exposure</small>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scan Configuration -->
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="maxPages">Max Pages</label>
+                            <input type="number" class="form-control" id="maxPages" name="maxPages" value="20" min="1" max="100">
+                            <small class="form-text text-muted">Maximum pages to scan</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="concurrency">Concurrency</label>
+                            <input type="number" class="form-control" id="concurrency" name="concurrency" value="3" min="1" max="10">
+                            <small class="form-text text-muted">Concurrent requests</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="timeout">Timeout (seconds)</label>
+                            <input type="number" class="form-control" id="timeout" name="timeout" value="10" min="5" max="60">
+                            <small class="form-text text-muted">Request timeout</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legal Notice -->
+                <div class="alert alert-danger" role="alert">
+                    <h5 class="alert-heading">⚠️ CRITICAL LEGAL NOTICE</h5>
+                    <p>This tool performs active security testing including:</p>
+                    <ul class="mb-2">
+                        <li><strong>A01:2021</strong> – Broken Access Control tests</li>
+                        <li><strong>A02:2021</strong> – Cryptographic failure detection</li>
+                        <li><strong>A03:2021</strong> – Injection attack vectors (XSS, SQLi, etc.)</li>
+                        <li><strong>A05:2021</strong> – Security misconfiguration checks</li>
+                        <li><strong>A07:2021</strong> – Authentication bypass attempts</li>
+                        <li><strong>A10:2021</strong> – Server-Side Request Forgery tests</li>
+                    </ul>
+                    <p class="mb-0"><strong>Only scan systems you own or have explicit written authorization to test.</strong> Unauthorized scanning may violate laws and terms of service.</p>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary btn-lg" 
+                        {% if not scanner_available %}disabled{% endif %}>
+                    🚀 Start OWASP Top 10 Scan
+                </button>
+            </form>
+        </div>
+
+        <!-- Scan Progress -->
+        <div id="scanProgress" class="scan-progress">
+            <div class="card">
+                <div class="card-header">
+                    <h5>🔄 Scan in Progress</h5>
+                </div>
+                <div class="card-body">
+                    <div class="progress mb-3">
+                        <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <p id="scanStatus">Initializing scan...</p>
+                    <button id="cancelScan" class="btn btn-danger">Cancel Scan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script>
+        let currentScanId = null;
+        let scanInterval = null;
+
+        $('#owaspScanForm').on('submit', function(e) {
+            e.preventDefault();
+            startScan();
+        });
+
+        function startScan() {
+            const formData = {
+                target: $('#target').val(),
+                maxPages: parseInt($('#maxPages').val()),
+                concurrency: parseInt($('#concurrency').val()),
+                timeout: parseInt($('#timeout').val()),
+                checks: []
+            };
+
+            // Get selected checks
+            $('input[name="checks"]:checked').each(function() {
+                formData.checks.push($(this).val());
+            });
+
+            $.ajax({
+                url: '/api/owasp/start',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function(response) {
+                    if (response.success) {
+                        currentScanId = response.scan_id;
+                        showScanProgress();
+                        startProgressUpdates();
+                    } else {
+                        alert('Error starting scan: ' + response.error);
+                    }
+                },
+                error: function(xhr) {
+                    const response = xhr.responseJSON || {};
+                    alert('Error starting scan: ' + (response.error || 'Unknown error'));
+                }
+            });
+        }
+
+        function showScanProgress() {
+            $('.scan-form').hide();
+            $('#scanProgress').show();
+        }
+
+        function startProgressUpdates() {
+            scanInterval = setInterval(checkScanStatus, 2000);
+        }
+
+        function checkScanStatus() {
+            if (!currentScanId) return;
+
+            $.ajax({
+                url: `/api/owasp/status/${currentScanId}`,
+                method: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        updateProgress(response);
+                        
+                        if (response.status === 'completed' || response.status === 'failed') {
+                            clearInterval(scanInterval);
+                            if (response.status === 'completed') {
+                                window.location.href = `/owasp-results/${currentScanId}`;
+                            } else {
+                                alert('Scan failed: ' + (response.error_message || 'Unknown error'));
+                                resetForm();
+                            }
+                        }
+                    }
+                },
+                error: function() {
+                    clearInterval(scanInterval);
+                    alert('Error checking scan status');
+                    resetForm();
+                }
+            });
+        }
+
+        function updateProgress(status) {
+            $('#progressBar').css('width', status.progress + '%');
+            $('#scanStatus').text(`Status: ${status.status} - Found ${status.findings_count || 0} vulnerabilities`);
+        }
+
+        $('#cancelScan').on('click', function() {
+            if (currentScanId) {
+                $.ajax({
+                    url: `/api/owasp/cancel/${currentScanId}`,
+                    method: 'POST',
+                    success: function() {
+                        clearInterval(scanInterval);
+                        resetForm();
+                        alert('Scan cancelled');
+                    },
+                    error: function() {
+                        alert('Error cancelling scan');
+                    }
+                });
+            }
+        });
+
+        function resetForm() {
+            $('#scanProgress').hide();
+            $('.scan-form').show();
+            currentScanId = null;
+        }
+    </script>
+</body>
+</html>

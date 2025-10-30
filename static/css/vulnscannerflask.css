@@ -1,0 +1,293 @@
+/*------------------------------------------------------------------
+* VulnScanner Flask - Application Specific Styles
+* VulScanner Web Application
+* Version: 2.0
+-------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------
+[Application branding and theme]
+*/
+:root {
+    --vuln-primary: #dc3545;     /* Red for vulnerabilities */
+    --vuln-secondary: #fd7e14;   /* Orange for warnings */
+    --vuln-success: #28a745;     /* Green for safe */
+    --vuln-info: #17a2b8;        /* Blue for info */
+    --vuln-warning: #ffc107;     /* Yellow for warnings */
+    --vuln-dark: #343a40;        /* Dark gray */
+    --vuln-light: #f8f9fa;       /* Light gray */
+}
+
+/*------------------------------------------------------------------
+[Vulnerability severity styling]
+*/
+.severity-critical {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.severity-high {
+    color: var(--vuln-primary);
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+.severity-medium {
+    color: var(--vuln-secondary);
+    background-color: rgba(253, 126, 20, 0.1);
+}
+
+.severity-low {
+    color: var(--vuln-warning);
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+.severity-info {
+    color: var(--vuln-info);
+    background-color: rgba(23, 162, 184, 0.1);
+}
+
+/*------------------------------------------------------------------
+[Scan status indicators]
+*/
+.scan-status {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.scan-running {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+}
+
+.scan-completed {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+.scan-failed {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+.scan-pending {
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+}
+
+/*------------------------------------------------------------------
+[URL validation and input styling]
+*/
+.url-input {
+    border: 2px solid #ced4da;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.url-input:focus {
+    border-color: var(--vuln-info);
+    box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.25);
+}
+
+.url-input.is-invalid {
+    border-color: var(--vuln-primary);
+}
+
+.url-input.is-valid {
+    border-color: var(--vuln-success);
+}
+
+/*------------------------------------------------------------------
+[Dashboard enhancements]
+*/
+.vuln-dashboard-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.vuln-dashboard-card .card-body {
+    padding: 1.5rem;
+}
+
+.vuln-chart-container {
+    position: relative;
+    height: 300px;
+    margin-bottom: 1rem;
+}
+
+/*------------------------------------------------------------------
+[Report styling]
+*/
+.vuln-report-header {
+    background: var(--vuln-dark);
+    color: white;
+    padding: 1rem;
+    border-radius: 0.375rem 0.375rem 0 0;
+}
+
+.vuln-report-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.vuln-report-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    border-left: 4px solid var(--vuln-info);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/*------------------------------------------------------------------
+[Navigation and branding]
+*/
+.vulnscanner-brand {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--vuln-primary);
+}
+
+.vulnscanner-logo {
+    height: 32px;
+    width: auto;
+    margin-right: 0.5rem;
+}
+
+/*------------------------------------------------------------------
+[Port scan results]
+*/
+.port-open {
+    color: var(--vuln-primary);
+    font-weight: bold;
+}
+
+.port-closed {
+    color: #6c757d;
+}
+
+.port-filtered {
+    color: var(--vuln-warning);
+}
+
+/*------------------------------------------------------------------
+[Loading and progress indicators]
+*/
+.vuln-loading {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    vertical-align: text-bottom;
+    border: 0.125rem solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: vuln-spin 0.75s linear infinite;
+}
+
+@keyframes vuln-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.progress-vuln {
+    height: 0.5rem;
+    background-color: var(--vuln-light);
+    border-radius: 0.25rem;
+}
+
+.progress-vuln .progress-bar {
+    background: linear-gradient(45deg, var(--vuln-info), var(--vuln-primary));
+}
+
+/*------------------------------------------------------------------
+[Data tables enhancements]
+*/
+.vuln-table {
+    background: white;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.vuln-table thead th {
+    background: var(--vuln-dark);
+    color: white;
+    border: none;
+    font-weight: 600;
+}
+
+.vuln-table tbody tr:hover {
+    background-color: rgba(23, 162, 184, 0.05);
+}
+
+/*------------------------------------------------------------------
+[Responsive adjustments]
+*/
+@media (max-width: 768px) {
+    .vuln-report-summary {
+        grid-template-columns: 1fr;
+    }
+    
+    .vulnscanner-logo {
+        height: 24px;
+    }
+    
+    .vuln-dashboard-card .card-body {
+        padding: 1rem;
+    }
+}
+
+/*------------------------------------------------------------------
+[Alert and notification styles]
+*/
+.alert-vuln {
+    border-left: 4px solid var(--vuln-primary);
+    background-color: rgba(220, 53, 69, 0.05);
+    border-radius: 0.375rem;
+}
+
+.alert-scan-complete {
+    border-left: 4px solid var(--vuln-success);
+    background-color: rgba(40, 167, 69, 0.05);
+}
+
+/*------------------------------------------------------------------
+[Form enhancements]
+*/
+.form-vuln .form-control {
+    border-radius: 0.375rem;
+    border: 1px solid #ced4da;
+    transition: all 0.15s ease-in-out;
+}
+
+.form-vuln .form-control:focus {
+    border-color: var(--vuln-info);
+    box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.25);
+}
+
+.btn-vuln-primary {
+    background: linear-gradient(45deg, var(--vuln-primary), #c82333);
+    border: none;
+    color: white;
+    border-radius: 0.375rem;
+    transition: all 0.15s ease-in-out;
+}
+
+.btn-vuln-primary:hover {
+    background: linear-gradient(45deg, #c82333, var(--vuln-primary));
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

