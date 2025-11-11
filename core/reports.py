@@ -11,21 +11,25 @@ utils = Utils()
 def generate_csv(data):  
   filename = 'report-{}-{}.csv'.format(utils.generate_uuid(), utils.get_date())
   with open('reports' + '/' + filename, mode='w') as csv_file:
-    fieldnames = ['#', 'ip', 'port', 'rule_id', 'rule_severity', 'rule_description', 'rule_rule_confirm', 'rule_mitigation']
+    fieldnames = ['#', 'ip', 'port', 'rule_id', 'rule_severity', 'rule_description', 'rule_rule_confirm', 'rule_mitigation', 'cve_ids']
     writer = csv.writer(csv_file)
     writer.writerow(fieldnames)
     
     row_num = 0
     for k, i in data.items():
       row_num += 1
+      cves = ''
+      if isinstance(i.get('cve_ids'), (list, tuple)) and i.get('cve_ids'):
+        cves = ';'.join(i.get('cve_ids'))
       writer.writerow([row_num, 
-                      i['ip'], 
-                      i['port'], 
-                      i['rule_id'], 
-                      utils.sev_to_human(i['rule_sev']), 
-                      i['rule_desc'], 
-                      i['rule_confirm'], 
-                      i['rule_mitigation']])
+                      i.get('ip',''), 
+                      i.get('port',''), 
+                      i.get('rule_id',''), 
+                      utils.sev_to_human(i.get('rule_sev',0)), 
+                      i.get('rule_desc',''), 
+                      i.get('rule_confirm',''), 
+                      i.get('rule_mitigation',''),
+                      cves])
   
   return filename
 
@@ -63,7 +67,6 @@ def generate_txt(vulns):
     for k, v in value.items():
       data += '{}:{}\n'.format(k,v)
     data += '\n'
-  
   f = open('reports/' + filename, "w")
   f.write(data)
   f.close()
@@ -100,6 +103,19 @@ def generate_xml(vulns):
 
     mitigation = xml.SubElement(vuln_element, "mitigation")
     mitigation.text = value['rule_mitigation']
+
+    # CVE enrichment: include CVE IDs if they were attached to the vuln
+    cves = value.get('cve_ids')
+    if cves:
+      cve_container = xml.SubElement(vuln_element, "cves")
+      # allow list or single string
+      if isinstance(cves, (list, tuple)):
+        for c in cves:
+          c_sub = xml.SubElement(cve_container, "cve")
+          c_sub.text = str(c)
+      else:
+        c_sub = xml.SubElement(cve_container, "cve")
+        c_sub.text = str(cves)
 
   data = xml.tostring(root)
   f = open('reports/' + filename, "w")

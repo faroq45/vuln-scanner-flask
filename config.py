@@ -48,6 +48,12 @@ DB_ECHO = False  # Set to False to reduce log verbosity
 # Scan Configuration
 USER_AGENT = 'vulscanner'
 
+# Machine Learning feature toggle
+# Set to True to enable ML payload generation (requires numpy, pandas, scikit-learn, joblib)
+# If ML dependencies are missing but this is True, the app will instruct you to install
+# the required packages. Use conda-forge on Windows to obtain prebuilt binaries.
+ENABLE_ML = True
+
 # Default scan configuration
 # This will be used in the "Quick Start" scan. 
 DEFAULT_SCAN = {

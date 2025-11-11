@@ -1,0 +1,160 @@
+/* custom-ui.css
+   Dark-blue body and interactive sidebar hover/expand styles
+*/
+
+/* --- Body / global --- */
+:root{
+  --bg-dark: #0b2447;      /* dark blue main background */
+  --panel:   #0f3a63;      /* slightly lighter panel */
+  --muted:   #9fb1c8;
+  --accent:  #1fb6ff;      /* bright accent */
+  --glass:   rgba(255,255,255,0.04);
+  --radius: 10px;
+  --transition-fast: 180ms;
+  --transition-slow: 300ms;
+}
+
+html,body{
+  height:100%;
+  margin:0;
+  padding:0;
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg-dark) 0%, #07223f 100%);
+  color: #e8f1f8;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Optional container to add padding for content */
+.app-container{
+  display:grid;
+  grid-template-columns: 72px 1fr; /* collapsed sidebar by default */
+  min-height:100vh;
+}
+
+/* --- Sidebar base --- */
+.sidebar {
+  background: linear-gradient(180deg, var(--panel), #0b2f4f);
+  padding:12px 8px;
+  border-right: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.45) inset;
+  transition: all var(--transition-slow) cubic-bezier(.2,.9,.3,1);
+  overflow: visible;
+  position:relative;
+}
+
+/* collapsed (default small) */
+.sidebar.collapsed{
+  width:72px;
+}
+
+/* expanded (on hover or .open) */
+.sidebar.expanded,
+.sidebar:hover,
+.sidebar:focus-within {
+  width:260px;
+  padding:16px;
+  box-shadow: 0 10px 30px rgba(2,18,40,0.6);
+}
+
+/* inner menu list */
+.sidebar .menu {
+  list-style:none;
+  margin:0;
+  padding:6px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+/* menu item */
+.sidebar .menu-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  color:var(--muted);
+  text-decoration:none;
+  transition: all var(--transition-fast) ease;
+}
+
+/* icon area */
+.sidebar .menu-item .mi-icon{
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  border-radius:8px;
+  background:transparent;
+  color:var(--accent);
+}
+
+/* label (hidden in collapsed state) */
+.sidebar .menu-item .mi-label{
+  opacity:0;
+  transform: translateX(-6px);
+  white-space:nowrap;
+  transition: opacity var(--transition-fast) ease, transform var(--transition-fast) ease;
+  font-weight:600;
+  font-size:14px;
+}
+
+/* show label when expanded */
+.sidebar.expanded .menu-item .mi-label,
+.sidebar:hover .menu-item .mi-label{
+  opacity:1;
+  transform: translateX(0);
+  color: #e6f5ff;
+}
+
+/* hover/active state for item */
+.sidebar .menu-item:hover{
+  background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  color: #ffffff;
+  transform: translateX(2px);
+}
+
+/* subtle indicator on left for active item */
+.sidebar .menu-item.active::before{
+  content:"";
+  width:4px;
+  height:100%;
+  background:var(--accent);
+  border-radius:4px;
+  margin-left:-12px;
+  margin-right:8px;
+}
+
+/* collapsed tooltip-like labels for hover (desktop) */
+.sidebar.collapsed .menu-item:hover::after{
+  content: attr(data-label);
+  position: absolute;
+  left: 84px;
+  background: rgba(6,18,34,0.95);
+  color: #e8f1f8;
+  padding:6px 10px;
+  border-radius:6px;
+  white-space:nowrap;
+  font-size:13px;
+  box-shadow: 0 8px 30px rgba(2,6,23,0.55);
+  transform: translateY(-6px);
+  opacity:1;
+  z-index:60;
+}
+
+/* content area */
+.main-content{
+  padding:22px;
+  background: transparent;
+}
+
+/* small responsive tweaks */
+@media (max-width:900px){
+  .app-container{ grid-template-columns: 1fr; }
+  .sidebar{ position:relative; width:100%; display:flex; }
+  .sidebar.collapsed{ width:100%;}
+  .sidebar .menu{ flex-direction:row; overflow:auto; gap:6px; }
+  .sidebar .menu-item .mi-label{ display:none; }
+}

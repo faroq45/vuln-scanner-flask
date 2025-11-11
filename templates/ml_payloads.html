@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2><i class="fas fa-robot"></i> ML-Powered Payload Generator</h2>
+
+            {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+
+            {% if success %}
+            <div class="alert alert-success">{{ success }}</div>
+            {% endif %}
+
+            <div class="card">
+                <div class="card-header">
+                    <h5>Generate Payloads</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('ml_payloads.generate_ml_payloads') }}">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Payload Type</label>
+                                    <select name="payload_type" class="form-control">
+                                        <option value="sqli">SQL Injection</option>
+                                        <option value="xss">XSS</option>
+                                        <option value="path_traversal">Path Traversal</option>
+                                        <option value="command_injection">Command Injection</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Number of Payloads</label>
+                                    <input type="number" name="count" class="form-control" value="10" min="1" max="50">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Creativity Level</label>
+                            <input type="range" name="creativity" class="form-control-range" min="0.1" max="1.0" step="0.1" value="0.7">
+                            <small class="form-text text-muted">Low (0.1) = Similar payloads, High (1.0) = More diverse payloads</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Base Payload (Optional)</label>
+                            <textarea name="base_payload" class="form-control" rows="3" placeholder="Enter a base payload to generate variants from..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-cogs"></i> Generate Payloads
+                        </button>
+
+                        <button type="button" class="btn btn-warning ml-2" onclick="retrainModel()">
+                            <i class="fas fa-sync-alt"></i> Retrain ML Model
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {% if sample_payloads %}
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5>Sample ML-Generated Payloads</h5>
+                </div>
+                <div class="card-body">
+                    {% for payload in sample_payloads %}
+                    <div class="alert alert-info">
+                        <strong>{{ payload.type|upper }}:</strong> {{ payload.payload }}
+                        <br><small>Creativity: {{ payload.creativity_level }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+function retrainModel() {
+    if (confirm('This will retrain the ML model. Continue?')) {
+        fetch('{{ url_for("ml_payloads.retrain_model") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        }).then(response => response.text())
+          .then(html => {
+              document.documentElement.innerHTML = html;
+          });
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2><i class="fas fa-robot"></i> ML-Generated Payloads</h2>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5>Generated {{ payloads|length }} {{ payload_type|upper }} Payloads</h5>
+                    <p class="mb-0">
+                        Creativity: {{ creativity }} |
+                        {% if base_payload %}Base: {{ base_payload }}{% else %}No base payload{% endif %}
+                    </p>
+                </div>
+                <div class="card-body">
+                    {% for payload in payloads %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                <span class="badge badge-primary">{{ payload.type|upper }}</span>
+                                <span class="badge badge-secondary">Similarity: {{ "%.3f"|format(payload.base_similarity) if payload.base_similarity else "N/A" }}</span>
+                            </h6>
+                            <code class="d-block p-2 bg-light rounded">{{ payload.payload }}</code>
+                            <small class="text-muted">Creativity: {{ payload.creativity_level }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <a href="{{ url_for('ml_payloads.view_ml_payloads') }}" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i> Back to Generator
+                </a>
+                <button onclick="window.history.back()" class="btn btn-secondary ml-2">
+                    <i class="fas fa-redo"></i> Go Back
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

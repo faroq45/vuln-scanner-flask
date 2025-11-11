@@ -231,6 +231,20 @@
       <th class='sev_{{value.rule_sev}}'>DETAILS</th>
       <td class='details'>{{value.rule_details}}</td>
   </tr>
+    {% if value.cve_ids %}
+    <tr>
+            <th class='sev_{{value.rule_sev}}'>CVE(S)</th>
+            <td>
+                {% if value.cve_ids is iterable and not value.cve_ids is string %}
+                    {% for c in value.cve_ids %}
+                        <a href="https://nvd.nist.gov/vuln/detail/{{c}}" target="_blank" style="color:#fff;">{{c}}</a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <a href="https://nvd.nist.gov/vuln/detail/{{value.cve_ids}}" target="_blank" style="color:#fff;">{{value.cve_ids}}</a>
+                {% endif %}
+            </td>
+    </tr>
+    {% endif %}
   <tr>
     <th class='sev_{{value.rule_sev}}'>RULE_ID</th>
     <td>{{value.rule_id}}</td>

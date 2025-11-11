@@ -178,6 +178,33 @@
         </div>
     </div>
     
+    <div class="wrapper">
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header"><b><i class="fa fa-robot"></i> Machine Learning</b> {% if ml_enabled %} <span class="c-darkgreen pull-right"> <i class="fas fa-check"></i> {% endif %}</div>
+                <div class="card-body">
+                  <div class="form-group row">
+                    <label class="col-sm-2">Enable ML Payloads</label>
+                    <div class="col-sm-3">
+                      <input type="checkbox" id="ml_enabled" name="ml_enabled" {% if ml_enabled %}checked{% endif %}>
+                      <small class="form-text text-muted">Toggle ML-generated payloads (may require ML packages installed).</small>
+                    </div>
+                  </div>
+                  <div class="form-group text-left">
+                    <button class="btn btn-danger" onclick="reset_settings('ml');" type="submit">Reset</button>
+                    <button class="btn btn-success" onclick="submit_ml();" type="submit">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <script src={{ url_for('static', filename="vendor/jquery3/jquery-3.4.1.min.js") }}></script>
     <script src={{ url_for('static', filename="vendor/bootstrap4/js/bootstrap.bundle.min.js") }}></script>
     <script src={{ url_for('static', filename="vendor/fontawesome5/js/solid.min.js") }}></script>
@@ -307,6 +334,33 @@
         xhttp.send(JSON.stringify(settings))
         return true;      
 
+      }
+
+      function submit_ml(){
+        var ml_enabled = document.getElementById('ml_enabled').checked;
+
+        var settings = {
+          'ml':{
+            'enabled': ml_enabled
+          }
+        }
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState === 4 && this.status == 200) {
+              var resp = JSON.parse(this.responseText);
+              toastr.success(resp.status);
+          }
+          else if (this.readyState === 4 && this.status != 200) {
+              var resp = JSON.parse(this.responseText);
+              toastr.error(resp.status);
+          }
+        };
+        xhttp.open("POST", "/settings", true);
+        xhttp.withCredentials = true;
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.send(JSON.stringify(settings))
+        return true;
       }
     </script>
 </body>

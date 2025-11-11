@@ -30,6 +30,14 @@ def view_settings():
         else:
           code, msg = 400, 'Slack hook must be a URL'
 
+      elif 'ml' in u_settings:
+        # Expect {'ml': {'enabled': True/False}}
+        ml_settings = u_settings.get('ml', {})
+        enabled = bool(ml_settings.get('enabled', False))
+        # persist as pickle for consistency
+        rds.store_json('p_settings_ml', enabled)
+        code, msg = 200, 'Saved ML Setting'
+
       else:
         code, msg = 400, 'Error Occurred'
       
@@ -44,11 +52,18 @@ def view_settings():
     elif settings == 'slack':
       rds.delete('p_settings_slack')
       code, msg = 200, 'Deleted Slack Settings'
+    elif settings == 'ml':
+      rds.delete('p_settings_ml')
+      code, msg = 200, 'Deleted ML Setting'
     else:
       code, msg = 400, 'Error Occurred'
       
     return  {'status': msg}, code
   
+  # ML enabled setting (persisted in Redis or fallback to config)
+  ml_enabled = rds.get_ml_setting()
+
   return render_template('settings.html', 
                          email=email_settings, 
-                         slack=slack_settings)
+                         slack=slack_settings,
+                         ml_enabled=ml_enabled)

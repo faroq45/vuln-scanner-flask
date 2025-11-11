@@ -8,7 +8,6 @@ from core.database import db_manager
 from version import VERSION
 from flask import Flask, session, request
 from flask_restful import Api
-
 # Import Blueprints
 from views.view_index import index
 from views.view_docs import documentation
@@ -40,6 +39,10 @@ from views_api.api_health import Health
 from views_api.api_scan import Scan
 from views_api.api_update import Update
 from views_api.api_exclusions import Exclusion
+from views_api.api_ml_payloads import MLPayloads, MLPayloadTrain
+from views.view_ml_payloads import ml_payloads
+
+
 
 app = Flask(__name__)
 
@@ -67,6 +70,8 @@ app.register_blueprint(owasp_scan)
 app.register_blueprint(signup)
 app.register_blueprint(database)
 app.register_blueprint(activity)
+app.register_blueprint(ml_payloads)
+
 
 
 app.config.update(
@@ -79,6 +84,8 @@ api.add_resource(Health, '/health')
 api.add_resource(Update, '/api/update', '/api/update/<string:component>')
 api.add_resource(Scan,   '/api/scan', '/api/scan/<string:action>')
 api.add_resource(Exclusion,   '/api/exclusion', '/api/exclusion')
+api.add_resource(MLPayloads, '/api/ml/payloads', '/api/ml/payloads/<string:payload_type>')
+api.add_resource(MLPayloadTrain, '/api/ml/train')
 
 
 # Activity Tracking Middleware
@@ -171,10 +178,12 @@ def show_current_user():
     current_user = session.get('session', 'Unknown User')
     return dict(current_user=current_user)
 
+from core.ml_payload_generator import ml_payload_generator
 
 if __name__ == '__main__':
     rds.initialize()
     start_workers()
+    ml_payload_generator.initialize()
     app.run(debug=config.WEB_DEBUG,
             host=config.WEB_HOST,
             port=config.WEB_PORT,

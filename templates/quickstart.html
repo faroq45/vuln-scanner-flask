@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>vulscanner</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link href={{ url_for('static', filename="vendor/bootstrap4/css/bootstrap.min.css") }}  rel="stylesheet">
-    <link href={{ url_for('static', filename="vendor/toastr/toastr.min.css") }}  rel="stylesheet">
-    <link href={{ url_for('static', filename="css/vulscanner.css") }}  rel="stylesheet">
-    <link href={{ url_for('static', filename="css/master.css") }}  rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendor/bootstrap4/css/bootstrap.min.css') }}"  rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendor/toastr/toastr.min.css') }} " rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/vulscanner.css') }} " rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/master.css') }} " rel="stylesheet">
 </head>
 
 <body>
@@ -22,10 +22,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="nav navbar-nav ml-auto">
                         <li class="nav-item dropdown">
-                              
+
                             <div class="nav-dropdown">
                                 <a href="" class="nav-item nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-user-shield"></i> <i style="font-size: .8em;" class="fas fa-caret-down"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right nav-link-menu">   
+                                <div class="dropdown-menu dropdown-menu-right nav-link-menu">
                                     <ul class="nav-list">
                                       <li><a href="https://github.com/obaidlone/website-scanner" class="dropdown-item"><i class="fas fa-bug"></i> Report a Bug</a></li>
                                       <li><a href="/settings" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a></li>
@@ -40,23 +40,23 @@
                                 {% if vuln_count %}
                                 <span class="nav-item nav-link"> <i class="fas fa-bell"></i><span class="badge badge-danger">{{vuln_count}}</span>
                                 {% else %}
-                                <span class="nav-item nav-link"> <i class="fa fa-bell"></i><span class="badge badge-success">{{vuln_count}}</span> 
+                                <span class="nav-item nav-link"> <i class="fa fa-bell"></i><span class="badge badge-success">{{vuln_count}}</span>
                                 {% endif %}
                             </div>
-                        </li>  
+                        </li>
                         <li class="nav-item dropdown">
                           <div class="nav-dropdown">
                             {% if status == "Ready" %}
                             <span class="nav-item nav-link"> <span class="navbar-status c-green"><i class="fas fa-smile"></i> {{status}}</span> </span>
                             {% else %}
-                            <span class="nav-item nav-link"> <span class="navbar-status c-white"> <i class="fa fa-spinner fa-spin"></i> {{status}}</span> </span> 
+                            <span class="nav-item nav-link"> <span class="navbar-status c-white"> <i class="fa fa-spinner fa-spin"></i> {{status}}</span> </span>
                             {% endif %}
                           </div>
-                      </li>  
+                      </li>
                     </ul>
                 </div>
             </nav>
-            
+
             <div class="content">
                 <div class="container-fluid">
                     <div class="page-title">
@@ -76,20 +76,45 @@
                                         <small class="form-text text-muted">Web application to scan for vulnerabilities</small>
                                     </label>
                                     <div class="col-sm-10">
-                                        <form method="POST" action="/qs" class="form-inline" accept-charset="utf-8">
-                                          <div class="form-group">
-                                              <label for="url" class="sr-only">URL</label>
-                                              <input type="url" size="40" name="url" placeholder="https://example.com" class="form-control" required>
-                                          </div>
-                                          <div class="form-group">
-                                              <button type="submit" class="btn btn-success">GO!</button>
-                                          </div> 
-                                      </form>
-                                      <div>    
+       <form id="quickscan-form" class="form-inline" onsubmit="startQuickScan(event)">
+  <div class="form-group">
+      <label for="url" class="sr-only">URL</label>
+      <input type="url" size="40" id="url" name="url" placeholder="https://example.com" class="form-control" required>
+  </div>
+  <div class="form-group">
+      <button type="submit" class="btn btn-success">GO!</button>
+  </div>
+</form>
+
+<script>
+function startQuickScan(e) {
+    e.preventDefault();
+    const url = document.getElementById('url').value;
+    if (!url) return toastr.error("Please enter a valid URL");
+
+    // build form data (matches backend expectation)
+    const formData = new FormData();
+    formData.append("url", url);
+
+    fetch("/qs", { method: "POST", body: formData })
+      .then(response => {
+          if (!response.ok) throw new Error("Server error");
+          toastr.success("Quick scan started successfully!");
+          setTimeout(() => window.location.href = "/console", 1500);
+      })
+      .catch(err => {
+          console.error(err);
+          toastr.error("Failed to start quick scan");
+      });
+}
+</script>
+
+
+                                      <div>
                                     </div>
                                     </div>
                                 </div>
-                              </div>    
+                              </div>
                           </div>
                       </div>
                     </div>
@@ -98,12 +123,12 @@
         </div>
     </div>
 
-    <script src={{ url_for('static', filename="vendor/jquery3/jquery-3.4.1.min.js") }}></script>
-    <script src={{ url_for('static', filename="vendor/bootstrap4/js/bootstrap.bundle.min.js") }}></script>
-    <script src={{ url_for('static', filename="vendor/fontawesome5/js/solid.min.js") }}></script>
-    <script src={{ url_for('static', filename="vendor/fontawesome5/js/fontawesome.min.js") }}></script>
-    <script src={{ url_for('static', filename="vendor/toastr/toastr.min.js") }}></script>
-    <script src={{ url_for('static', filename="js/script.js") }}></script>
+    <script src="{{ url_for('static', filename='vendor/jquery3/jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap4/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/fontawesome5/js/solid.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/fontawesome5/js/fontawesome.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/toastr/toastr.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
      {% if messages %}
